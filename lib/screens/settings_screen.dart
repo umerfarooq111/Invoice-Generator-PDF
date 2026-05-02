@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/shop_settings.dart';
-import '../providers/settings_provider.dart';
+import 'package:quickbill_pk/providers/settings_provider.dart';
 import '../widgets/common_widgets.dart';
 
 class SettingsScreen extends StatefulWidget {

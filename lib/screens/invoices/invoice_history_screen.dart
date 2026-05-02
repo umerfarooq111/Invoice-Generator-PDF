@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/invoice.dart';
-import '../../providers/invoice_provider.dart';
-import '../../providers/settings_provider.dart';
+import 'package:quickbill_pk/providers/invoice_provider.dart';
+import 'package:quickbill_pk/providers/settings_provider.dart';
 import '../../widgets/common_widgets.dart';
 import '../invoices/create_invoice_screen.dart';
 import '../invoice_detail_screen.dart';

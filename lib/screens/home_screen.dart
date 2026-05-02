@@ -9,12 +9,13 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import '../models/invoice.dart';
-import '../providers/invoice_provider.dart';
-import '../providers/product_provider.dart';
-import '../providers/customer_provider.dart';
-import '../providers/settings_provider.dart';
+import 'package:quickbill_pk/providers/invoice_provider.dart';
+import 'package:quickbill_pk/providers/product_provider.dart';
+import 'package:quickbill_pk/providers/customer_provider.dart';
+import 'package:quickbill_pk/providers/settings_provider.dart';
 import '../widgets/common_widgets.dart';
 import 'invoices/create_invoice_screen.dart';
+import 'reports_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -150,19 +151,39 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       const SizedBox(height: 24),
 
-                      // ── Create Invoice Button ────────────
+                      // ── Quick Actions ────────────
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: ElevatedButton.icon(
-                          onPressed: _navigateToCreateInvoice,
-                          icon: const Icon(Icons.add, size: 22),
-                          label: const Text('Create New Invoice'),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 56),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                onPressed: _navigateToCreateInvoice,
+                                icon: const Icon(Icons.add, size: 20),
+                                label: const Text('New Invoice'),
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(0, 52),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                onPressed: _navigateToReports,
+                                icon: const Icon(Icons.bar_chart, size: 20),
+                                label: const Text('Reports'),
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: const Size(0, 52),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
@@ -212,6 +233,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const CreateInvoiceScreen()),
+    );
+  }
+
+  void _navigateToReports() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ReportsScreen()),
     );
   }
 }

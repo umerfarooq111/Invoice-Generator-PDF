@@ -114,11 +114,11 @@ class DatabaseService {
   /// Handle database schema upgrades for existing users
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      // v1 → v2: Add new columns to invoices table
-      await db.execute('ALTER TABLE invoices ADD COLUMN title TEXT');
-      await db.execute('ALTER TABLE invoices ADD COLUMN notes TEXT');
-      await db.execute('ALTER TABLE invoices ADD COLUMN shop_address TEXT');
-      await db.execute('ALTER TABLE invoices ADD COLUMN terms_conditions TEXT');
+      // v1 → v2: Add new columns to invoices table (with safety catch)
+      try { await db.execute('ALTER TABLE invoices ADD COLUMN title TEXT'); } catch (_) {}
+      try { await db.execute('ALTER TABLE invoices ADD COLUMN notes TEXT'); } catch (_) {}
+      try { await db.execute('ALTER TABLE invoices ADD COLUMN shop_address TEXT'); } catch (_) {}
+      try { await db.execute('ALTER TABLE invoices ADD COLUMN terms_conditions TEXT'); } catch (_) {}
     }
     if (oldVersion < 3) {
       // v2 → v3: Add settings table
@@ -363,5 +363,43 @@ class DatabaseService {
     final db = await database;
     final result = await db.rawQuery('SELECT COUNT(*) as count FROM invoices');
     return (result.first['count'] as int?) ?? 0;
+  }
+
+  // ─── Report Data Aggregation ──────────────────────────────
+
+  /// Get daily sales for the last 30 days
+  Future<List<Map<String, dynamic>>> getDailySales() async {
+    final db = await database;
+    return await db.rawQuery('''
+      SELECT date(created_at) as period, SUM(total) as total 
+      FROM invoices 
+      WHERE created_at >= date('now', '-30 days')
+      GROUP BY period 
+      ORDER BY period ASC
+    ''');
+  }
+
+  /// Get monthly sales for the last 12 months
+  Future<List<Map<String, dynamic>>> getMonthlySales() async {
+    final db = await database;
+    return await db.rawQuery('''
+      SELECT strftime('%Y-%m', created_at) as period, SUM(total) as total 
+      FROM invoices 
+      WHERE created_at >= date('now', '-1 year')
+      GROUP BY period 
+      ORDER BY period ASC
+    ''');
+  }
+
+  /// Get top selling products by quantity
+  Future<List<Map<String, dynamic>>> getTopSellingProducts({int limit = 5}) async {
+    final db = await database;
+    return await db.rawQuery('''
+      SELECT product_name, SUM(quantity) as total_qty, SUM(quantity * unit_price) as revenue
+      FROM invoice_items
+      GROUP BY product_name
+      ORDER BY total_qty DESC
+      LIMIT ?
+    ''', [limit]);
   }
 }

@@ -6,16 +6,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/product_provider.dart';
-import 'providers/customer_provider.dart';
-import 'providers/invoice_provider.dart';
-import 'providers/settings_provider.dart';
-import 'screens/home_screen.dart';
-import 'screens/products/products_screen.dart';
-import 'screens/customers/customers_screen.dart';
-import 'screens/invoices/invoice_history_screen.dart';
-import 'screens/settings_screen.dart';
-import 'services/database_init.dart';
+import 'package:quickbill_pk/providers/product_provider.dart';
+import 'package:quickbill_pk/providers/customer_provider.dart';
+import 'package:quickbill_pk/providers/invoice_provider.dart';
+import 'package:quickbill_pk/providers/settings_provider.dart';
+import 'package:quickbill_pk/providers/reports_provider.dart';
+
+import 'package:quickbill_pk/screens/home_screen.dart';
+import 'package:quickbill_pk/screens/products/products_screen.dart';
+import 'package:quickbill_pk/screens/customers/customers_screen.dart';
+import 'package:quickbill_pk/screens/invoices/invoice_history_screen.dart';
+import 'package:quickbill_pk/screens/settings_screen.dart';
+
+import 'package:quickbill_pk/services/database_init.dart';
 
 void main() {
   // Ensure Flutter engine is initialized before running app
@@ -39,6 +42,7 @@ class QuickBillApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CustomerProvider()),
         ChangeNotifierProvider(create: (_) => InvoiceProvider()),
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
+        ChangeNotifierProvider(create: (_) => ReportsProvider()),
       ],
       child: MaterialApp(
         title: 'QuickBill PK',
@@ -154,7 +158,7 @@ class _MainNavigationState extends State<MainNavigation> {
         children: _screens,
       ),
 
-      // Bottom navigation bar with 4 tabs
+      // Bottom navigation bar with 5 tabs
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) {

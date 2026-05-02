@@ -14,10 +14,10 @@ import '../../models/customer.dart';
 import '../../models/invoice.dart';
 import '../../models/invoice_item.dart';
 import '../../models/product.dart';
-import '../../providers/customer_provider.dart';
-import '../../providers/invoice_provider.dart';
-import '../../providers/product_provider.dart';
-import '../../providers/settings_provider.dart';
+import 'package:quickbill_pk/providers/customer_provider.dart';
+import 'package:quickbill_pk/providers/invoice_provider.dart';
+import 'package:quickbill_pk/providers/product_provider.dart';
+import 'package:quickbill_pk/providers/settings_provider.dart';
 import '../../widgets/common_widgets.dart';
 
 class CreateInvoiceScreen extends StatefulWidget {

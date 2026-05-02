@@ -9,8 +9,8 @@ import 'package:intl/intl.dart';
 
 import '../models/invoice.dart';
 import '../models/invoice_item.dart';
-import '../providers/invoice_provider.dart';
-import '../providers/settings_provider.dart';
+import 'package:quickbill_pk/providers/invoice_provider.dart';
+import 'package:quickbill_pk/providers/settings_provider.dart';
 import '../widgets/common_widgets.dart';
 
 class InvoiceDetailScreen extends StatelessWidget {
