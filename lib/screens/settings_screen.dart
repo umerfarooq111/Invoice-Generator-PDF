@@ -230,13 +230,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Center(
               child: Column(
                 children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    height: 32,
-                    errorBuilder: (context, error, stackTrace) =>
-                        Icon(Icons.bolt, color: primary, size: 28),
-                  ),
-                  const SizedBox(height: 8),
+                  Icon(Icons.bolt, color: primary, size: 28),
+                  const SizedBox(height: 4),
                   Text(
                     'QuickBill PK',
                     style: TextStyle(
