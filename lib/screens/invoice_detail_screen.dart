@@ -31,7 +31,17 @@ class InvoiceDetailScreen extends StatelessWidget {
           invoice.displayName,
         ),
         actions: [
-          // Share PDF action in AppBar
+          // Save PDF action
+          IconButton(
+            icon: const Icon(Icons.download_outlined),
+            tooltip: 'Save PDF',
+            onPressed: () {
+              final settings = context.read<SettingsProvider>().settings;
+              context.read<InvoiceProvider>().previewInvoicePdf(invoice,
+                  shopSettings: settings);
+            },
+          ),
+          // Share PDF action
           IconButton(
             icon: const Icon(Icons.share_outlined),
             tooltip: 'Share PDF',
@@ -44,7 +54,7 @@ class InvoiceDetailScreen extends StatelessWidget {
           // Preview PDF action
           IconButton(
             icon: const Icon(Icons.picture_as_pdf_outlined),
-            tooltip: 'Preview PDF',
+            tooltip: 'Print / Preview',
             onPressed: () {
               final settings = context.read<SettingsProvider>().settings;
               context.read<InvoiceProvider>().previewInvoicePdf(invoice,
@@ -342,15 +352,36 @@ class InvoiceDetailScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // ── Action Buttons ────────────────────────────
-            ElevatedButton.icon(
-              onPressed: () {
-                final settings = context.read<SettingsProvider>().settings;
-                context.read<InvoiceProvider>().shareInvoicePdf(invoice,
-                    shopSettings: settings);
-              },
-              icon: const Icon(Icons.share_outlined),
-              label: const Text('Share Invoice PDF'),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      final settings = context.read<SettingsProvider>().settings;
+                      context.read<InvoiceProvider>().previewInvoicePdf(invoice,
+                          shopSettings: settings);
+                    },
+                    icon: const Icon(Icons.download_outlined),
+                    label: const Text('Save PDF'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade700,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      final settings = context.read<SettingsProvider>().settings;
+                      context.read<InvoiceProvider>().shareInvoicePdf(invoice,
+                          shopSettings: settings);
+                    },
+                    icon: const Icon(Icons.share_outlined),
+                    label: const Text('Share PDF'),
+                  ),
+                ),
+              ],
             ),
 
             const SizedBox(height: 12),
@@ -362,7 +393,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                     shopSettings: settings);
               },
               icon: const Icon(Icons.picture_as_pdf_outlined),
-              label: const Text('Preview PDF'),
+              label: const Text('Preview / Print'),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 52),
                 shape: RoundedRectangleBorder(

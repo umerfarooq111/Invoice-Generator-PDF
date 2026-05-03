@@ -61,9 +61,74 @@ class _ReportsScreenState extends State<ReportsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // ── Business Overview Section ──────────────────
+                const SectionHeader(title: 'Business Overview'),
+                const SizedBox(height: 12),
+                
+                // Primary Stats Row
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildStatCard(
+                        label: 'Total Sales',
+                        value: 'PKR ${_currencyFmt.format(provider.totalSales)}',
+                        icon: Icons.account_balance_wallet,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildStatCard(
+                        label: "Today's Sales",
+                        value: 'PKR ${_currencyFmt.format(provider.todaySales)}',
+                        icon: Icons.today,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                
+                // Secondary Stats Row
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildStatCard(
+                        label: 'Monthly Sales',
+                        value: 'PKR ${_currencyFmt.format(provider.monthlySalesTotal)}',
+                        icon: Icons.calendar_month,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildStatCard(
+                        label: 'Total Invoices',
+                        value: provider.totalInvoices.toString(),
+                        icon: Icons.receipt,
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                
+                // Top Product Stat
+                _buildStatCard(
+                  label: 'Most Demanded Product',
+                  value: provider.mostDemandedProduct,
+                  icon: Icons.star,
+                  color: Colors.red,
+                  isWide: true,
+                ),
+
+                const SizedBox(height: 32),
+
                 // ── Sales Trend Card ────────────────────────
+                const SectionHeader(title: 'Sales Trends'),
+                const SizedBox(height: 12),
                 _buildCard(
-                  title: 'Sales Revenue Trend',
+                  title: 'Revenue Trend',
                   subtitle: 'Visualizing your business growth',
                   child: Column(
                     children: [
@@ -261,6 +326,67 @@ class _ReportsScreenState extends State<ReportsScreen> {
             titleStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
           );
         }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildStatCard({
+    required String label,
+    required String value,
+    required IconData icon,
+    required Color color,
+    bool isWide = false,
+  }) {
+    return Container(
+      width: isWide ? double.infinity : null,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

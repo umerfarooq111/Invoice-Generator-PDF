@@ -366,6 +366,24 @@ class DatabaseService {
   }
 
   // ─── Report Data Aggregation ──────────────────────────────
+  
+  /// Get total sales for TODAY
+  Future<double> getTodaySales() async {
+    final db = await database;
+    final result = await db.rawQuery(
+        "SELECT SUM(total) as total FROM invoices WHERE date(created_at) = date('now')");
+    final value = result.first['total'];
+    return value == null ? 0.0 : (value as num).toDouble();
+  }
+
+  /// Get total sales for the CURRENT MONTH
+  Future<double> getCurrentMonthSales() async {
+    final db = await database;
+    final result = await db.rawQuery(
+        "SELECT SUM(total) as total FROM invoices WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now')");
+    final value = result.first['total'];
+    return value == null ? 0.0 : (value as num).toDouble();
+  }
 
   /// Get daily sales for the last 30 days
   Future<List<Map<String, dynamic>>> getDailySales() async {
