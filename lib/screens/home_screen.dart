@@ -83,13 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'QuickBill PK',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Image.asset(
+                            'assets/logos/logo.png',
+                            height: 50,
+                            fit: BoxFit.contain,
                           ),
                           const SizedBox(height: 4),
                           Text(

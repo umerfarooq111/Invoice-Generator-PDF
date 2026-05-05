@@ -7,6 +7,9 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+
 import '../models/product.dart';
 import '../models/customer.dart';
 import '../models/invoice.dart';
@@ -32,8 +35,18 @@ class DatabaseService {
 
   Future<Database> _initDatabase() async {
     // Get the platform-specific path for storing databases
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'quickbill_pk.db');
+    String dbDir;
+    
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      // On Desktop, getApplicationDocumentsDirectory is more reliable for persistence
+      final directory = await getApplicationDocumentsDirectory();
+      dbDir = directory.path;
+    } else {
+      // On Mobile, use the default sqflite databases path
+      dbDir = await getDatabasesPath();
+    }
+    
+    final path = join(dbDir, 'quickbill_pk.db');
 
     return openDatabase(
       path,
